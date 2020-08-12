@@ -23,12 +23,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * Spring 源码探底
+ */
 public class SpringDemo {
 
-    /**
-     * Spring 源码探底
-     */
+
     @Test
     public void research(){
         ApplicationContext context = new AnnotationConfigApplicationContext(SimpleStart.class);
@@ -108,7 +108,6 @@ public class SpringDemo {
         System.out.println(obj);
     }
 
-
     @Test
     public void parseAnnotation() {
         AnnotatedTypeMetadata metadata = AnnotationMetadata.introspect(BeanDefine.class);
@@ -121,7 +120,7 @@ public class SpringDemo {
         println(attributes.get("value"));
     }
 
-    List<AnnotationAttributes> annotationAttributesFromMultiValueMap(MultiValueMap<String, Object> multiValueMap) {
+    private List<AnnotationAttributes> annotationAttributesFromMultiValueMap(MultiValueMap<String, Object> multiValueMap) {
         List<Map<String, Object>> maps = new ArrayList<>();
         for (Map.Entry<String, List<Object>> entry : multiValueMap.entrySet()) {
             for (int i = 0; i < entry.getValue().size(); i++) {

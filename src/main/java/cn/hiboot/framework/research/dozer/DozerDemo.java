@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -39,7 +40,7 @@ public class DozerDemo {
 
     @Bean("org.dozer.Mapper")
     public DozerBeanMapper dozer() {
-        List<String> mappingFiles = Arrays.asList("dozer-mapping.xml");
+        List<String> mappingFiles = Collections.singletonList("dozer-mapping.xml");
         DozerBeanMapper dozerBean = new DozerBeanMapper();
         dozerBean.setMappingFiles(mappingFiles);
         return dozerBean;
