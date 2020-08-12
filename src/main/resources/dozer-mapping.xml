@@ -4,7 +4,7 @@
           http://dozer.sourceforge.net/schema/beanmapping.xsd">
     <!--如果两个类需要装换的属性名相同则不需要写这个mapping-->
     <mapping>
-        <class-a>cn.hiboot.frame.dozer.ContacterDO</class-a>
-        <class-b>cn.hiboot.frame.dozer.ContacterVO</class-b>
+        <class-a>cn.hiboot.framework.research.dozer.ContacterDO</class-a>
+        <class-b>cn.hiboot.framework.research.dozer.ContacterVO</class-b>
     </mapping>
 </mappings>

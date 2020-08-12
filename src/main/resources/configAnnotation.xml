@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans>
-    <bean id = "userDao" class="cn.hiboot.frame.dom4j.UserDaoImpl" />
-    <bean id = "user1Dao" class="cn.hiboot.frame.dom4j.User1DaoImpl" />
-    <bean id = "user2Dao" class="cn.hiboot.frame.dom4j.User2DaoImpl" />
-    <bean id = "userService" class = "cn.hiboot.frame.dom4j.UserServiceImpl" />
+    <bean id = "userDao" class="cn.hiboot.framework.research.dom4j.UserDaoImpl" />
+    <bean id = "user1Dao" class="cn.hiboot.framework.research.dom4j.User1DaoImpl" />
+    <bean id = "user2Dao" class="cn.hiboot.framework.research.dom4j.User2DaoImpl" />
+    <bean id = "userService" class = "cn.hiboot.framework.research.dom4j.UserServiceImpl" />
 </beans>
