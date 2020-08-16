@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @since 2019/10/9 10:36
  */
 @Slf4j
-@ComponentScan(basePackageClasses = SimpleStart.class)
+@ComponentScan
 public class SimpleStart {
 
     public SimpleStart() {
