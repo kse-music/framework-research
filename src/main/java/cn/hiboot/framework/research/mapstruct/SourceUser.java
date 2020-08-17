@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * describe about this class
@@ -20,4 +21,6 @@ public class SourceUser {
     private Date date;
     private UserTypeEnum userTypeEnum;
     private Address address;
+    private List<Address> addresses;
+
 }

@@ -3,6 +3,7 @@ package cn.hiboot.framework.research.mapstruct;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,12 +16,13 @@ import java.util.Map;
 @Getter
 public class TargetUser {
     private Integer age;
-
     private String className;
     private Map<Object,Object> obj;
     private String date;
     private String constant;
     private String type;
     private Address address;
+    private List<Address> addresses;
+
 
 }

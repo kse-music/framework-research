@@ -21,7 +21,7 @@ public interface UserStruct {
         @Mapping(target = "obj", expression = "java(cn.hiboot.framework.research.mapstruct.Obj2Map.obj2Map(sourceUser.getObj()))"),
         @Mapping(target = "date",dateFormat = "yyyy-MM-dd HH:mm:ss"),
         @Mapping(target = "constant",constant = "这是个常量"),
-        @Mapping(source = "userTypeEnum", target = "type")
+        @Mapping(source = "userTypeEnum", target = "type"),
     })
     TargetUser convert(SourceUser sourceUser);
 }

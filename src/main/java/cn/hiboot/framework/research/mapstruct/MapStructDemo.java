@@ -2,7 +2,9 @@ package cn.hiboot.framework.research.mapstruct;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -21,10 +23,15 @@ public class MapStructDemo {
         sourceUser.setAge(30);
         sourceUser.setDate(new Date());
         sourceUser.setUserTypeEnum(UserTypeEnum.Java);
+        Map<String,Object> m = new HashMap<>();
+        m.put("el",2);
+        m.put("st",8L);
+        sourceUser.setObj(m);
         Address address = new Address();
         address.setProvince("anhui");
         address.setCity("tongLing");
         sourceUser.setAddress(address);
+        sourceUser.setAddresses(Collections.singletonList(address));
         TargetUser targetUser = userStruct.convert(sourceUser);
         System.out.println(targetUser);
     }
