@@ -18,9 +18,11 @@ public class SourceUser {
     private int age;
     private String name;
     private Object obj;
+    private Float floatVar;
     private Date date;
     private UserTypeEnum userTypeEnum;
     private Address address;
     private List<Address> addresses;
+    private Double doubleVar;
 
 }

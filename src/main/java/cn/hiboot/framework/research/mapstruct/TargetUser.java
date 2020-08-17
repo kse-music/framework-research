@@ -18,11 +18,13 @@ public class TargetUser {
     private Integer age;
     private String className;
     private Map<Object,Object> obj;
+    private Float floatVar;
     private String date;
-    private String constant;
+    private int intConstant;
     private String type;
     private Address address;
     private List<Address> addresses;
+    private Double doubleVar;
 
 
 }

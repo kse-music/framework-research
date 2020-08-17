@@ -27,6 +27,7 @@ public class MapStructDemo {
         m.put("el",2);
         m.put("st",8L);
         sourceUser.setObj(m);
+//        sourceUser.setFloatVar(1.1F);
         Address address = new Address();
         address.setProvince("anhui");
         address.setCity("tongLing");

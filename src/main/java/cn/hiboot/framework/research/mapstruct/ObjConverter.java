@@ -9,8 +9,14 @@ import java.util.Map;
  * @author DingHao
  * @since 2020/8/16 15:15
  */
-public class Obj2Map {
+public class ObjConverter {
+
     public static Map<Object,Object> obj2Map(Object obj){
         return ((Map<Object,Object>) obj);
     }
+
+    public static Float obj2Map(Float obj){
+        return obj;
+    }
+
 }
