@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * describe about this class
@@ -18,6 +19,7 @@ public class SourceUser {
     private int age;
     private String name;
     private Object obj;
+    private Map<String,Object> map;
     private Float floatVar;
     private Date date;
     private UserTypeEnum userTypeEnum;

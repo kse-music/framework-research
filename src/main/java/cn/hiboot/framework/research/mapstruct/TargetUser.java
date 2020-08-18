@@ -26,5 +26,8 @@ public class TargetUser {
     private List<Address> addresses;
     private Double doubleVar;
 
+    private Long id;
+    private String name;
+
 
 }

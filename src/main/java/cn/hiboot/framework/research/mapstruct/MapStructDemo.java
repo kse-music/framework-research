@@ -24,10 +24,11 @@ public class MapStructDemo {
         sourceUser.setDate(new Date());
         sourceUser.setUserTypeEnum(UserTypeEnum.Java);
         Map<String,Object> m = new HashMap<>();
-        m.put("el",2);
-        m.put("st",8L);
+        m.put("id",2L);
+        m.put("name","jack");
         sourceUser.setObj(m);
 //        sourceUser.setFloatVar(1.1F);
+        sourceUser.setMap(m);
         Address address = new Address();
         address.setProvince("anhui");
         address.setCity("tongLing");
