@@ -3,15 +3,13 @@ package cn.hiboot.framework.research.gremlin;
 import com.google.common.collect.Lists;
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.Edge;
-import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory;
 import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
 import org.junit.jupiter.api.Test;
 
-import java.util.Date;
 import java.util.List;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.P.neq;
@@ -20,7 +18,19 @@ import static org.apache.tinkerpop.gremlin.process.traversal.step.util.WithOptio
 
 
 /**
- * description about this class
+ * 结束性单步
+ * g.V().out('created').hasNext()
+ * g.V().out('created').next()
+ * g.V().out('created').next(2)
+ * g.V().out('nothing').tryNext()
+ * g.V().out('created').toList()
+ * g.V().out('created').toSet()
+ * g.V().out('created').toBulkSet()
+ * g.V().out('created').fill(results)
+ * g.addV('person').iterate()
+ *
+ * promise()
+ * explain()
  *
  * @author DingHao
  * @since 2020/2/17 21:54
@@ -39,18 +49,24 @@ public class GremlinDemo {
 
     @Test
     public void research(){
-        TinkerGraph graph = TinkerGraph.open();
-        Vertex ly = graph.addVertex(T.id, 1L, T.label, "人", "id",3L,"name", "李延","synonym",Lists.newArrayList("Ly","ly"));
-        Vertex hyz = graph.addVertex(T.id, 2L, T.label, "机构", "id",4L,"name", "海乂知","synonym",Lists.newArrayList("PlantData","plantdata"));
-        Edge edge = ly.addEdge("任职", hyz, "attr_time_from", new Date());
-        GraphTraversalSource g = graph.traversal();
-        System.out.println(g.V(1L).out().toList());
-        System.out.println(g.V(1L).outE().toList());
-        System.out.println(g.E(edge).outV());
+//        TinkerGraph graph = TinkerFactory.createTheCrew();
 
-        System.out.println(g.V().toList());
-        System.out.println(g.V().properties().toList());
-        System.out.println(g.E().properties().toList());
+        TinkerGraph graph = TinkerFactory.createModern();
+        GraphTraversalSource g = graph.traversal();
+        GraphTraversal<Vertex, Vertex> v = g.V();
+        System.out.println(v.toList());
+
+
+//        System.out.println(g.V().hasLabel("person").has("age",29).both("knows").hasLabel("person").has("age",gte(32)).has("name","josh").valueMap("name","age").toList());
+
+
+//        GraphTraversal<Vertex, Vertex> and = g.V().hasLabel("person").
+//                and(has("name"),
+//                        has("name", "marko"),
+//                        filter(has("age", gt(20))));
+//        System.out.println(and.toList());
+
+
     }
 
     @Test
