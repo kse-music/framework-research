@@ -11,7 +11,7 @@
     <properties>
         <webVersion>3.0</webVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.version>5.2.8.RELEASE</spring.version>
+        <spring.version>5.2.9.RELEASE</spring.version>
         <jackson.version>2.11.2</jackson.version>
         <es.version>7.8.1</es.version>
         <poi.version>4.1.2</poi.version>
@@ -286,11 +286,7 @@
             <version>1.18.12</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.30</version>
-        </dependency>
+
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
