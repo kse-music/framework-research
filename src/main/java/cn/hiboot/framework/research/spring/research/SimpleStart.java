@@ -1,6 +1,7 @@
 package cn.hiboot.framework.research.spring.research;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
@@ -19,5 +20,10 @@ public class SimpleStart {
 
     public String test(){
         return "test method return value";
+    }
+
+    @Bean(initMethod="beanInitMethod",destroyMethod="beanDestroyMethod")
+    public BeanLife beanLife(){
+        return new BeanLife();
     }
 }

@@ -31,9 +31,9 @@ public class SpringDemo {
 
     @Test
     public void research(){
-        ApplicationContext context = new AnnotationConfigApplicationContext(SimpleStart.class);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SimpleStart.class);
         SimpleStart bean = context.getBean(SimpleStart.class);
-        println(bean.test());
+        context.close();
     }
 
     @Test
