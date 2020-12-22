@@ -19,7 +19,7 @@
     </environments>
 
     <mappers>
-        <mapper resource="mapper/NewsMapper.xml"/>
+<!--        <mapper resource="mapper/NewsMapper.xml"/>-->
     </mappers>
 
 </configuration>

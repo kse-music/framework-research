@@ -20,6 +20,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ *
+ *  1.如果SqlSession执行了DML操作（insert、update、delete），并commit了，那么mybatis就会清空当前SqlSession缓存中的所有缓存数据，这样可以保证缓存中的存的数据永远和数据库中一致，避免出现脏读
+ *  2.当一个SqlSession结束后那么他里面的一级缓存也就不存在了，mybatis默认是开启一级缓存，不需要配置
+ *  3.mybatis的缓存是基于[namespace:sql语句:参数]来进行缓存的，意思就是，SqlSession的HashMap存储缓存数据时，是使用[namespace:sql:参数]作为key，查询返回的语句作为value保存的。
  * @author DingHao
  * @since 2018/11/30 13:21
  */
@@ -30,24 +34,29 @@ public class MybatisDemo {
 
     @BeforeEach
     public void init() throws IOException {
-        sqlSessionFactory = buildSqlSessionFactoryByXml();
-//        sqlSessionFactory.getConfiguration().addMapper(NewsMapper.class);//手动添加mapper
+        sqlSessionFactory = buildSqlSessionFactoryByXml("mybatis-config.xml");
+        addMapper(sqlSessionFactory.getConfiguration(),NewsMapper.class);
 
 //        sqlSessionFactory = buildSqlSessionFactoryByConfig();
     }
 
-    private SqlSessionFactory buildSqlSessionFactoryByXml() throws IOException {
-        String resource = "mybatis-config.xml";
+    private SqlSessionFactory buildSqlSessionFactoryByXml(String resource) throws IOException {
         InputStream inputStream = Resources.getResourceAsStream(resource);
         return new SqlSessionFactoryBuilder().build(inputStream);
     }
 
+    private void addMapper(Configuration configuration,Class<?> type){
+        //此种方式若mapper接口路径下没有xml文件，则需要在mapper接口方法上添加@Select等注解
+        // @Select("SELECT * FROM t_news")
+        configuration.addMapper(type);//手动添加mapper
+    }
+
     private SqlSessionFactory buildSqlSessionFactoryByConfig(){
-        DataSource dataSource = new PooledDataSource("com.mysql.jdbc.Driver","jdbc:mysql://192.168.1.10:3306/test?characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false&useSSL=false","root","root@hiekn");
+        DataSource dataSource = new PooledDataSource("com.mysql.jdbc.Driver","jdbc:mysql://192.168.4.30:3306/meta_boot?characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false&useSSL=false","root","root@hiekn");
         TransactionFactory transactionFactory = new JdbcTransactionFactory();
-        Environment environment = new Environment("development", transactionFactory, dataSource);
+        Environment environment = new Environment.Builder("development").transactionFactory(transactionFactory).dataSource(dataSource).build();
         Configuration configuration = new Configuration(environment);
-        configuration.addMapper(NewsMapper.class);
+        addMapper(configuration,NewsMapper.class);
         return new SqlSessionFactoryBuilder().build(configuration);
     }
 
@@ -63,22 +72,16 @@ public class MybatisDemo {
      */
     @Test
     public void testSelect(){
-        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try(SqlSession sqlSession = sqlSessionFactory.openSession()){
+            //方式一：Good
+            NewsMapper mapper = sqlSession.getMapper(NewsMapper.class);
+            List<Map<String,Object>> list = mapper.selectTitle();
+            log.info("{}",list);
 
-        NewsMapper mapper = sqlSession.getMapper(NewsMapper.class);//方式一：Good
-        List<Map<String,Object>> list = mapper.selectTitle();
-        log.info("{}",list);
-        /*
-            注意事项：
-    　　　　　　1.如果SqlSession执行了DML操作（insert、update、delete），并commit了，那么mybatis就会清空当前SqlSession缓存中的所有缓存数据，这样可以保证缓存中的存的数据永远和数据库中一致，避免出现脏读
-    　　　　　　2.当一个SqlSession结束后那么他里面的一级缓存也就不存在了，mybatis默认是开启一级缓存，不需要配置
-    　　　　　　3.mybatis的缓存是基于[namespace:sql语句:参数]来进行缓存的，意思就是，SqlSession的HashMap存储缓存数据时，是使用[namespace:sql:参数]作为key，查询返回的语句作为value保存的。
-         */
-
-//        Map<Object, Object> map2 = sqlSession.selectOne(NewsMapper.class.getName() + ".selectTitle");//方式二
-//        logger.info("{}",map2);
-
-        sqlSession.close();
+            //方式二
+            Map<Object, Object> map2 = sqlSession.selectOne(NewsMapper.class.getName() + ".selectTitle");
+            log.info("{}",map2);
+        }
     }
 
 
