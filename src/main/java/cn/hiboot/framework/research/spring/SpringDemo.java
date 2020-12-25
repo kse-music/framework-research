@@ -33,7 +33,7 @@ public class SpringDemo {
     public void research(){
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SimpleStart.class);
         SimpleStart bean = context.getBean(SimpleStart.class);
-        context.close();
+        bean.test();
     }
 
     @Test

@@ -1,19 +1,18 @@
 package cn.hiboot.framework.research.spring.processor;
 
 import org.aspectj.lang.annotation.Around;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.AnnotatedGenericBeanDefinition;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.ScannedGenericBeanDefinition;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ClassUtils;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -25,64 +24,42 @@ public class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor,Envi
 
     private Environment environment;
 
+    @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        String[] beanStr = beanFactory.getBeanDefinitionNames();
-        for (String beanName : beanStr) {
-            if ("complexStart".equals(beanName)) {
-                BeanDefinition beanDefinition = beanFactory.getBeanDefinition(beanName);
-                AnnotatedGenericBeanDefinition bd = (AnnotatedGenericBeanDefinition)beanDefinition;
-                try {
-                    Field field = bd.getBeanClass().getDeclaredField("home");
-                    field.setAccessible(true);
-                    Annotation[] annotations = field.getDeclaredAnnotations();
-                    for (Annotation annotation : annotations) {
-                        if (annotation.annotationType().getName().equals(Value.class.getName())) {
-                            InvocationHandler invocationHandler = Proxy.getInvocationHandler(annotation);
-                            Field declaredField = invocationHandler.getClass().getDeclaredField("memberValues");
-                            declaredField.setAccessible(true);
-                            Map memberValues = (Map) declaredField.get(invocationHandler);
-                            memberValues.put("value", "${user.home}");
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+        BeanDefinition beanDefinition = beanFactory.getBeanDefinition("aopConfig");
+        try {
+            Method[] declaredMethods = null;
+            if(beanDefinition instanceof AbstractBeanDefinition){
+                AbstractBeanDefinition abstractBeanDefinition = (AbstractBeanDefinition) beanDefinition;
+                Class<?> beanClass = null;
+                if(beanDefinition instanceof ScannedGenericBeanDefinition){
+                    beanClass = abstractBeanDefinition.resolveBeanClass(null);
+                }else if(beanDefinition instanceof AnnotatedGenericBeanDefinition){
+                    beanClass = abstractBeanDefinition.getBeanClass();
                 }
-                beanDefinition.getPropertyValues().add("home", "赵四");
-            }else if ("aopConfig".equals(beanName)) {
-                BeanDefinition beanDefinition = beanFactory.getBeanDefinition(beanName);
-                try {
-                    Method[] declaredMethods = null;
-                    if(beanDefinition instanceof ScannedGenericBeanDefinition){
-                        ScannedGenericBeanDefinition bd = (ScannedGenericBeanDefinition)beanDefinition;
-                        bd.setBeanClass(ClassUtils.forName(bd.getBeanClassName(),null));
-                        declaredMethods = bd.getBeanClass().getDeclaredMethods();
-                    }else if(beanDefinition instanceof AnnotatedGenericBeanDefinition){
-                        declaredMethods = ((AnnotatedGenericBeanDefinition) beanDefinition).getBeanClass().getDeclaredMethods();
-                    }
-                    for (Method declaredMethod : declaredMethods) {
-                        Annotation[] declaredAnnotations = declaredMethod.getDeclaredAnnotations();
-                        for (Annotation annotation : declaredAnnotations) {
-                            if(annotation.annotationType().getName().equals(Around.class.getName())){
-                                Around around = (Around)annotation;
-                                declaredMethod.setAccessible(true);
-                                InvocationHandler invocationHandler = Proxy.getInvocationHandler(annotation);
-                                Field declaredField = invocationHandler.getClass().getDeclaredField("memberValues");
-                                declaredField.setAccessible(true);
-                                Map memberValues = (Map) declaredField.get(invocationHandler);
-                                memberValues.put("value", environment.getProperty(around.value(),around.value()));
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if(beanClass != null){
+                    declaredMethods = beanClass.getDeclaredMethods();
                 }
             }
+            if(declaredMethods == null){
+                return;
+            }
+            for (Method declaredMethod : declaredMethods) {
+                Around around = declaredMethod.getAnnotation(Around.class);
+                InvocationHandler invocationHandler = Proxy.getInvocationHandler(around);
+                Field declaredField = invocationHandler.getClass().getDeclaredField("memberValues");
+                declaredField.setAccessible(true);
+                Map memberValues = (Map) declaredField.get(invocationHandler);
+                memberValues.put("value", environment.resolvePlaceholders(around.value()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         System.out.println("BeanFactoryPostProcessor : postProcessBeanFactory invoke");
     }
 
     @Override
-    public void setEnvironment(Environment environment) {
+    public void setEnvironment(@NotNull Environment environment) {
         this.environment = environment;
     }
 }
