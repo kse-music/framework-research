@@ -13,7 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>5.3.3</spring.version>
         <jackson.version>2.12.0</jackson.version>
-        <poi.version>4.1.2</poi.version>
+        <poi.version>5.0.0</poi.version>
         <netty.version>4.1.56.Final</netty.version>
         <guava.version>30.0-jre</guava.version>
         <gremlin.version>3.4.9</gremlin.version>
