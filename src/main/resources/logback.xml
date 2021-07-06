@@ -36,7 +36,7 @@
         </encoder>
     </appender>
 
-    <root><!-- 也是logger,默认是DEBUG -->
+    <root level="info"><!-- 也是logger,默认是DEBUG -->
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE_INFO" />
     </root>
