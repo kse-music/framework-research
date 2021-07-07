@@ -21,8 +21,4 @@ public class SimpleStart {
         return "test method return value";
     }
 
-//    @Bean(initMethod="beanInitMethod",destroyMethod="beanDestroyMethod")
-//    public BeanLife beanLife(){
-//        return new BeanLife();
-//    }
 }

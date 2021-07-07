@@ -1,6 +1,7 @@
 package cn.hiboot.framework.research.spring.processor;
 
 import cn.hiboot.framework.research.dozer.DozerDemo;
+import cn.hiboot.framework.research.spring.basic.BeanLife;
 import cn.hiboot.framework.research.spring.basic.ExampleBean;
 import cn.hiboot.framework.research.spring.basic.ExampleBean2;
 import org.slf4j.Logger;
@@ -94,6 +95,11 @@ public class ComplexStart implements InitializingBean {
             ExampleBean2 exampleBean2 = new ExampleBean2();
             exampleBean2.setExampleBean(exampleBean());
             return exampleBean2;
+        }
+
+        @Bean(initMethod="beanInitMethod",destroyMethod="beanDestroyMethod")
+        public BeanLife beanLife(){
+            return new BeanLife();
         }
 
     }

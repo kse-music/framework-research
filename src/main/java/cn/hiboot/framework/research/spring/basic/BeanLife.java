@@ -1,4 +1,4 @@
-package cn.hiboot.framework.research.spring.research;
+package cn.hiboot.framework.research.spring.basic;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.*;
@@ -18,13 +18,17 @@ import javax.annotation.PreDestroy;
  * @since 2019/10/9 10:36
  */
 public class BeanLife implements BeanNameAware, BeanClassLoaderAware, BeanFactoryAware ,ApplicationContextAware, InitializingBean,
-        ApplicationListener, DisposableBean,SmartInitializingSingleton {
+        ApplicationListener<ApplicationEvent>, DisposableBean,SmartInitializingSingleton {
 
-    private UserService userService;
+    private ExampleBean exampleBean;
+
+    public BeanLife() {
+        System.out.println("1:执行构造器");
+    }
 
     @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
+    public void setExampleBean(ExampleBean exampleBean) {
+        this.exampleBean = exampleBean;
         System.out.println("2:设置属性");
     }
 
@@ -36,10 +40,6 @@ public class BeanLife implements BeanNameAware, BeanClassLoaderAware, BeanFactor
     @PreDestroy
     private void preDestroy(){
         System.out.println("9:执行PreDestroy");
-    }
-
-    public BeanLife() {
-        System.out.println("1:执行构造器");
     }
 
     @Override
